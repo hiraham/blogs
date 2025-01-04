@@ -1,11 +1,22 @@
 import React from 'react'
+import Navbar from '@/components/Navbar'
+import AutherCard from '@/components/AutherCard'
 
-const page = () => {
+import Footer from '@/components/Footer'
+import Feature from '@/components/Feature'
+import Mega from '@/components/Mega'
+const Home = () => {
   return (
     <div>
-      hello world
+    <Navbar/>
+    <Feature/>
+    <Mega/>
+    <AutherCard/>
+  
+    <Footer/>
+
     </div>
   )
 }
 
-export default page
+export default Home;
