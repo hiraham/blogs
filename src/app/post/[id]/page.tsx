@@ -1,9 +1,10 @@
 "use client";
-import React, { useCallback } from "react";
-
+import React , { useEffect, useState } from "react";
+import Image from "next/image";
 import CommentSection from "@/components/CommentSection";
 import AutherCard from "@/components/AutherCard";
 import Footer from "@/components/Footer"
+
 
 const posts = [
   {
@@ -71,14 +72,19 @@ const posts = [
       },
 ];
 
-export default  async function Post({ params }: { params:Promise<{ id: string }> }) { 
- 
- 
-  const { id } = await(params); 
 
-  
 
-  const post = posts.find((post) => post.id === id);
+export default function Post({ params }: { params: Promise<{ id: string }> }) { 
+  const [post, setPost] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchParams() {
+      const { id } = await params; // Unwrap the promise
+      const foundPost = posts.find((post) => post.id === id);
+      setPost(foundPost);
+    }
+    fetchParams();
+  }, [params]);
 
   if (!post) {
     return (
@@ -102,9 +108,11 @@ export default  async function Post({ params }: { params:Promise<{ id: string }>
       </h1>
       <p className="text-sm text-gray-500">{post.date}</p>
       {post.image && (
-        <img
+        <Image
           src={post.image}
           alt={post.title}
+          width={100}
+          height={100}
           className="w-full h-auto rounded-md mt-4"
         />
       )}
@@ -112,7 +120,6 @@ export default  async function Post({ params }: { params:Promise<{ id: string }>
       <div className="mt-6 text-lg text-slate-700">
         {renderParagraphs(post.description)}
       </div>
-
       <CommentSection postId={post.id} />
       <AutherCard />
       <Footer/>
